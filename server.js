@@ -5,6 +5,19 @@ const server = express();
 
 server.use(express.json());
 
+// GET ALL CARS
+server.get("/api/cars", async (req, res) => {
+  try {
+    const cars = await carsTable("cars");
+    if (!cars.length) return res.status(200).json({ message: "No entries" });
+    return res.status(200).json(cars);
+  } catch (error) {
+    res
+      .status(500)
+      .json({ errorMessage: "Unable to retrieve cars data.", error });
+  }
+});
+
 // ADD A CAR RECORD
 server.post("/api/cars", async (req, res) => {
   try {
